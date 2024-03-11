@@ -44,18 +44,91 @@ clock = pygame.time.Clock()
 
 # Тут опишите все классы игры.
 ...
+class GameObject:
+    """Родительский класс всех игровых объектов."""
+    def __init__(self, body_color) -> None:
+        self.position = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
+        self.body_color = body_color
+   
+    def draw(self):
+        """Метод, определяющий отрисовку объекта на экране. Будет переопределен в дочерних классах"""
+        pass
+
+
+class Apple(GameObject):
+    """Класс, описывающий игровой объект - яблоко."""
+    def __init__(self, body_color) -> None:     
+        super().__init__(body_color)
+        self.body_color = APPLE_COLOR
+        self.position = self.randomize_position()
+
+    def randomize_position(self):
+        return (
+            randint(0, GRID_WIDTH) * GRID_SIZE,
+            randint(0, GRID_HEIGHT) * GRID_SIZE
+        )
+    
+    def draw(self, surface):
+        rect = pygame.Rect(
+            (self.position[0], self.position[1]),
+            (GRID_SIZE, GRID_SIZE)
+        )
+        pygame.draw.rect(surface, self.body_color, rect)
+        pygame.draw.rect(surface, BORDER_COLOR, rect, 1)
+
+
+class Snake(GameObject):
+    
+    def __init__(self, body_color) -> None:     
+        super().__init__(body_color)
+        self.body_color = SNAKE_COLOR
+        self.lenght = 1
+        self.positions = [self.position]
+        self.direction = RIGHT
+        self.next_direction = None
+        self.last = None
+     
+    def get_head_position(self):
+        return self.positions[0]
+
+    def update_direction(self):
+        if self.next_direction:
+            self.direction = self.next_direction
+            self.next_direction = None
+
+    def move(self):
+        current_head_position = self.get_head_position()
+        new_head_position = (current_head_position[0] + self.direction[0] * GRID_SIZE, current_head_position[1] + self.direction[1] * GRID_SIZE)
+        if self.bite_myself_check(new_head_position):
+            self.positions.insert(0, new_head_position)
+        else:
+            self.reset()
+        if len(self.positions) > self.lenght:
+            self.positions = self.positions.pop()
+    
+    def bite_myself_check(self, new_head_position):
+        if new_head_position in self.positions and new_head_position != self.positions[0] and new_head_position != self.positions[1]:
+            return True
+         
+    
+
 
 
 def main():
     # Тут нужно создать экземпляры классов.
     ...
 
-    # while True:
-    #     clock.tick(SPEED)
+    while True:
+        clock.tick(SPEED)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                return
 
         # Тут опишите основную логику игры.
         # ...
-
+        pygame.display.update()
 
 if __name__ == '__main__':
     main()
