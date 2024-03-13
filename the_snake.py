@@ -45,7 +45,7 @@ clock = pygame.time.Clock()
 class GameObject:
     """Родительский класс всех игровых объектов."""
 
-    def __init__(self, body_color=None) -> None:
+    def __init__(self, body_color=None):
         self.position = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
         self.body_color = body_color
 
@@ -58,11 +58,11 @@ class GameObject:
 class Apple(GameObject):
     """Класс, описывающий игровой объект - яблоко."""
 
-    def __init__(self, body_color=APPLE_COLOR) -> None:
+    def __init__(self, body_color=APPLE_COLOR):
         super().__init__(body_color)
         self.position = self.randomize_position()
 
-    def randomize_position(self) -> tuple[int, int]:
+    def randomize_position(self):
         """Метод, задающий рандомные координаты яблока."""
         return (
             randint(1, GRID_WIDTH) * GRID_SIZE - GRID_SIZE,
@@ -82,7 +82,7 @@ class Apple(GameObject):
 class Snake(GameObject):
     """Класс, описывающий игровой объект - змейку."""
 
-    def __init__(self, body_color=SNAKE_COLOR) -> None:
+    def __init__(self, body_color=SNAKE_COLOR):
         super().__init__(body_color)
         self.length = 1
         self.positions = [self.position]
@@ -91,7 +91,7 @@ class Snake(GameObject):
         self.last = None
         self.directions = (LEFT, RIGHT, UP, DOWN)
 
-    def get_head_position(self) -> tuple[int, int]:
+    def get_head_position(self):
         """Метод, возвращающий позицию головы змейки."""
         return self.positions[0]
 
