@@ -174,8 +174,8 @@ def handle_keys(game_object):
 
 def main():
 
-    apple = Apple(APPLE_COLOR)
-    snake = Snake(SNAKE_COLOR)
+    apple = Apple()
+    snake = Snake()
 
     while True:
         clock.tick(SPEED)
