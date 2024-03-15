@@ -93,12 +93,13 @@ class Snake(GameObject):
 
     def __init__(self, body_color=SNAKE_COLOR):
         super().__init__(body_color)
-        self.length = 1
+        self.directions = (LEFT, RIGHT, UP, DOWN)
+        self.length = self.reset()
         self.positions = [self.position]
         self.direction = RIGHT
         self.next_direction = None
         self.last = None
-        self.directions = (LEFT, RIGHT, UP, DOWN)
+        
 
     def get_head_position(self):
         """Метод, возвращающий позицию головы змейки."""
@@ -125,40 +126,42 @@ class Snake(GameObject):
 
         if new_head_position in self.positions:
             self.reset()
-        else:
+        
+        else: 
             self.positions.insert(0, new_head_position)
 
         self.last = self.positions[len(self.positions) - 1]
 
         if len(self.positions) > self.length:
             self.positions.pop()
-
+        
     def reset(self):
         """Метод, обрабатывающий столкновение змейки с собой же."""
         self.length = 1
         self.positions = [self.position]
         self.direction = choice(self.directions)
         screen.fill(BOARD_BACKGROUND_COLOR)
-
-    def draw(self, surface):
+        return self.length
+    
+    def draw(self, screen):
         """Метод отрисовки змейки на экране."""
         for position in self.positions[:-1]:
             rect = (
                 pg.Rect((position[0], position[1]), (GRID_SIZE, GRID_SIZE))
             )
-            pg.draw.rect(surface, self.body_color, rect)
-            pg.draw.rect(surface, BORDER_COLOR, rect, 1)
+            pg.draw.rect(screen, self.body_color, rect)
+            pg.draw.rect(screen, BORDER_COLOR, rect, 1)
 
         head_rect = pg.Rect(self.positions[0], (GRID_SIZE, GRID_SIZE))
-        pg.draw.rect(surface, self.body_color, head_rect)
-        pg.draw.rect(surface, BORDER_COLOR, head_rect, 1)
+        pg.draw.rect(screen, self.body_color, head_rect)
+        pg.draw.rect(screen, BORDER_COLOR, head_rect, 1)
 
         if self.last:
             last_rect = pg.Rect(
                 (self.last[0], self.last[1]),
                 (GRID_SIZE, GRID_SIZE)
             )
-            pg.draw.rect(surface, BOARD_BACKGROUND_COLOR, last_rect)
+            pg.draw.rect(screen, BOARD_BACKGROUND_COLOR, last_rect)
 
 
 def handle_keys(game_object):
@@ -197,11 +200,15 @@ def main():
         handle_keys(snake)
         snake.update_direction()
 
+        
         if snake.get_head_position() == apple.position:
             snake.length += 1
             apple.position = apple.randomize_position(snake)
-
+        
+        
         snake.move()
+        
+        
         apple.draw()
         snake.draw(screen)
 
