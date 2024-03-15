@@ -120,7 +120,6 @@ class Snake(GameObject):
         Метод, отвечающий за расчет позиции змейки
         с учётом игровых событий.
         """
-
         self.positions.insert(0, self.get_new_head_position())
 
         self.last = self.positions[-1]
