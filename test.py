@@ -103,6 +103,11 @@ class Snake(GameObject):
         """Метод, возвращающий позицию головы змейки."""
         return self.positions[0]
 
+    def update_direction(self):
+        """Метод, определяющий направление движения змейки."""
+        if self.direction:
+            self.direction = self.direction
+
     def get_new_head_position(self):
         current_head_position = self.get_head_position()
         new_head_position = (
@@ -113,13 +118,6 @@ class Snake(GameObject):
         )
         return new_head_position
     
-    
-    
-    def update_direction(self):
-        """Метод, определяющий направление движения змейки."""
-        if self.direction:
-            self.direction = self.direction
-
     def move(self):
         """
         Метод, отвечающий за расчет позиции змейки
@@ -127,6 +125,9 @@ class Snake(GameObject):
         """
         
 
+        
+
+        
         self.positions.insert(0, self.get_new_head_position())
 
         self.last = self.positions[-1]
@@ -138,7 +139,7 @@ class Snake(GameObject):
         self.length = 1
         self.positions = [self.position]
         self.direction = choice(self.directions)
-        
+        #screen.fill(BOARD_BACKGROUND_COLOR)
         return self.length
 
     def draw(self, screen):
@@ -196,14 +197,14 @@ def main():
 
         handle_keys(snake)
 
-        if snake.get_head_position() == apple.position:
-            snake.length += 1
-            apple.position = apple.randomize_position(snake)
-
         if snake.get_new_head_position() in snake.positions:
             snake.reset()
             screen.fill(BOARD_BACKGROUND_COLOR)
         
+        if snake.get_head_position() == apple.position:
+            snake.length += 1
+            apple.position = apple.randomize_position(snake)
+
         snake.move()
 
         apple.draw()
