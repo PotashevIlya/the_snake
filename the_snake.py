@@ -166,10 +166,10 @@ def main():
     apple = Apple()
     apple.snake_positions = snake.positions
     apple.randomize_position()
-    
+
     while True:
         clock.tick(SPEED)
-        
+
         handle_keys(snake)
         snake.move()
 
