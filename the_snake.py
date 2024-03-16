@@ -169,8 +169,8 @@ def handle_keys(game_object):
 def main():
     """Функция, реализующая основную логику игры."""
     screen.fill(BOARD_BACKGROUND_COLOR)
-    apple = Apple()
     snake = Snake()
+    apple = Apple()
 
     while True:
         clock.tick(SPEED)
