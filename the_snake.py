@@ -54,35 +54,30 @@ class GameObject:
         """Метод, заливающий хвост змейки при движении."""
         rect = pg.Rect(position, (GRID_SIZE, GRID_SIZE))
         pg.draw.rect(screen, BOARD_BACKGROUND_COLOR, rect)
-    
+
     def draw(self):
         """Метод, определяющий отрисовку объекта на экране.
         Будет переопределен в дочерних классах.
         """
-        pass
 
 
 class Apple(GameObject):
     """Класс, описывающий игровой объект - яблоко."""
 
-    def __init__(self, body_color=APPLE_COLOR):
+    def __init__(self, snake_positions, body_color=APPLE_COLOR):
         super().__init__(body_color)
-        self.position = (
-            randint(1, GRID_WIDTH) * GRID_SIZE - GRID_SIZE,
-            randint(1, GRID_HEIGHT) * GRID_SIZE - GRID_SIZE
-        )
+        self.snake_positions = snake_positions
+        self.randomize_position()
 
-    def randomize_position(self, snake_positions):
+    def randomize_position(self):
         """Метод, задающий рандомные координаты яблока после поедания."""
         self.position = (
             randint(1, GRID_WIDTH) * GRID_SIZE - GRID_SIZE,
             randint(1, GRID_HEIGHT) * GRID_SIZE - GRID_SIZE
         )
 
-        if self.position in snake_positions.positions:
-            self.randomize_position(snake_positions.positions)
-
-        return self.position
+        while self.position in self.snake_positions:
+            self.randomize_position()
 
     def draw(self):
         """Метод отрисовки яблока на экране."""
@@ -175,7 +170,7 @@ def main():
     """Функция, реализующая основную логику игры."""
     screen.fill(BOARD_BACKGROUND_COLOR)
     snake = Snake()
-    apple = Apple()
+    apple = Apple(snake.positions)
 
     while True:
         clock.tick(SPEED)
@@ -185,7 +180,7 @@ def main():
 
         if snake.get_head_position() == apple.position:
             snake.length += 1
-            apple.position = apple.randomize_position(snake)
+            apple.randomize_position()
 
         if snake.get_new_head_position() in snake.positions:
             snake.reset()
