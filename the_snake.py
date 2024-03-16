@@ -155,7 +155,6 @@ def main():
     """Функция, реализующая основную логику игры."""
     screen.fill(BOARD_BACKGROUND_COLOR)
     snake = Snake()
-    snake.direction = RIGHT
     apple = Apple(snake.positions)
 
     while True:
@@ -167,9 +166,7 @@ def main():
         if snake.get_head_position() == apple.position:
             snake.length += 1
             apple.randomize_position(snake.positions)
-        elif snake.get_head_position() in snake.positions[
-            4:len(snake.positions)
-        ]:
+        elif snake.get_head_position() in snake.positions[4:]:
             snake.reset()
             screen.fill(BOARD_BACKGROUND_COLOR)
 
