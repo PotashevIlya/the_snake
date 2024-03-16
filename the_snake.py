@@ -117,7 +117,6 @@ class Snake(GameObject):
         с учётом игровых событий.
         """
         self.positions.insert(0, self.get_new_head_position())
-
         self.last = self.positions[-1]
         if len(self.positions) > self.length:
             self.positions.pop()
@@ -129,8 +128,6 @@ class Snake(GameObject):
         self.length = 1
         self.positions = [self.position]
         self.last = None
-
-        
 
     def draw(self):
         """Метод отрисовки движения змейки на экране."""
@@ -161,7 +158,6 @@ def handle_keys(game_object):
             elif event.key == pg.K_ESCAPE:
                 pg.quit()
                 raise SystemExit
-    
 
 
 def main():
@@ -179,10 +175,10 @@ def main():
         if snake.get_head_position() == apple.position:
             snake.length += 1
             apple.randomize_position()
-
-        if snake.get_new_head_position() in snake.positions:
-            snake.reset()
-            screen.fill(BOARD_BACKGROUND_COLOR)
+        else:
+            if snake.get_new_head_position() in snake.positions:
+                snake.reset()
+                screen.fill(BOARD_BACKGROUND_COLOR)
 
         apple.draw()
         snake.draw()
