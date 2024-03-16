@@ -44,10 +44,10 @@ class GameObject:
         self.position = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
         self.body_color = body_color
 
-    def draw_a_cell(self, position, color):
+    def draw_a_cell(self, position):
         """Метод, отрисовывающий ячейку."""
         rect = pg.Rect(position, (GRID_SIZE, GRID_SIZE))
-        pg.draw.rect(screen, color, rect)
+        pg.draw.rect(screen, self.body_color, rect)
         pg.draw.rect(screen, BORDER_COLOR, rect, 1)
 
     def delete_a_snake(self, position):
@@ -86,7 +86,7 @@ class Apple(GameObject):
 
     def draw(self):
         """Метод отрисовки яблока на экране."""
-        self.draw_a_cell(self.position, APPLE_COLOR)
+        self.draw_a_cell(self.position)
 
 
 class Snake(GameObject):
@@ -141,7 +141,7 @@ class Snake(GameObject):
 
     def draw(self):
         """Метод отрисовки движения змейки на экране."""
-        self.draw_a_cell(self.positions[0], SNAKE_COLOR)
+        self.draw_a_cell(self.positions[0])
 
         if self.last:
             self.delete_a_snake(self.last)
