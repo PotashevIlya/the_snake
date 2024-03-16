@@ -28,7 +28,7 @@ SPEED = 20
 
 # Настройка игрового окна:
 screen = pg.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), 0, 32)
-screen.fill(BOARD_BACKGROUND_COLOR)
+
 
 # Заголовок окна игрового поля:
 pg.display.set_caption('Змейка! Для прекращения игры нажмите ESC.')
@@ -168,6 +168,7 @@ def handle_keys(game_object):
 
 def main():
     """Функция, реализующая основную логику игры."""
+    screen.fill(BOARD_BACKGROUND_COLOR)
     apple = Apple()
     snake = Snake()
 
