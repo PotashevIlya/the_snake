@@ -43,16 +43,14 @@ class GameObject:
         self.position = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
         self.body_color = body_color
 
-    def draw_a_cell(self, position):
+    def draw_a_cell(self, position, color=None):
         """Метод, отрисовывающий ячейку."""
         rect = pg.Rect(position, (GRID_SIZE, GRID_SIZE))
-        pg.draw.rect(screen, self.body_color, rect)
-        pg.draw.rect(screen, BORDER_COLOR, rect, 1)
-
-    def delete_a_snake(self, position):
-        """Метод, заливающий хвост змейки при движении."""
-        rect = pg.Rect(position, (GRID_SIZE, GRID_SIZE))
-        pg.draw.rect(screen, BOARD_BACKGROUND_COLOR, rect)
+        if color == BOARD_BACKGROUND_COLOR:
+            pg.draw.rect(screen, BOARD_BACKGROUND_COLOR, rect)
+        else:
+            pg.draw.rect(screen, self.body_color, rect)
+            pg.draw.rect(screen, BORDER_COLOR, rect, 1)
 
     def draw(self):
         """Метод, определяющий отрисовку объекта на экране.
@@ -92,7 +90,7 @@ class Snake(GameObject):
     def __init__(self, body_color=SNAKE_COLOR):
         super().__init__(body_color)
         self.reset()
-        self.direction = RIGHT
+        
 
     def get_head_position(self):
         """Метод, возвращающий текущую позицию головы змейки."""
@@ -130,13 +128,14 @@ class Snake(GameObject):
         self.length = 1
         self.positions = [self.position]
         self.last = None
+        self.direction = RIGHT
 
     def draw(self):
         """Метод отрисовки движения змейки на экране."""
         self.draw_a_cell(self.get_head_position())
 
         if self.last:
-            self.delete_a_snake(self.last)
+            self.draw_a_cell(self.last, BOARD_BACKGROUND_COLOR)
 
 
 def handle_keys(game_object):
