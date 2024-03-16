@@ -107,10 +107,9 @@ class Snake(GameObject):
         )
         return new_head_position
 
-    def update_direction(self):
+    def update_direction(self, new_direction):
         """Метод, определяющий направление движения змейки."""
-        if self.direction:
-            self.direction = self.direction
+        self.direction = new_direction
 
     def move(self):
         """
@@ -152,17 +151,17 @@ def handle_keys(game_object):
             raise SystemExit
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_UP and game_object.direction != DOWN:
-                game_object.direction = UP
+                game_object.update_direction(UP)
             elif event.key == pg.K_DOWN and game_object.direction != UP:
-                game_object.direction = DOWN
+                game_object.update_direction(DOWN)
             elif event.key == pg.K_LEFT and game_object.direction != RIGHT:
-                game_object.direction = LEFT
+                game_object.update_direction(LEFT)
             elif event.key == pg.K_RIGHT and game_object.direction != LEFT:
-                game_object.direction = RIGHT
+                game_object.update_direction(RIGHT)
             elif event.key == pg.K_ESCAPE:
                 pg.quit()
                 raise SystemExit
-    game_object.update_direction()
+    
 
 
 def main():
