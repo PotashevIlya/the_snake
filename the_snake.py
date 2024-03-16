@@ -19,7 +19,7 @@ RIGHT = (1, 0)
 
 # Цвета объектов.
 BOARD_BACKGROUND_COLOR = (128, 128, 128)
-BORDER_COLOR = (128, 128, 128)
+BORDER_COLOR = (0, 0, 0)
 APPLE_COLOR = (255, 0, 0)
 SNAKE_COLOR = (0, 255, 0)
 
@@ -50,6 +50,11 @@ class GameObject:
         pg.draw.rect(screen, color, rect)
         pg.draw.rect(screen, BORDER_COLOR, rect, 1)
 
+    def delete_a_snake(self, position):
+        """Метод, заливающий хвост змейки при движении."""
+        rect = pg.Rect(position, (GRID_SIZE, GRID_SIZE))
+        pg.draw.rect(screen, BOARD_BACKGROUND_COLOR, rect)
+    
     def draw(self):
         """Метод, определяющий отрисовку объекта на экране.
         Будет переопределен в дочерних классах.
@@ -139,7 +144,7 @@ class Snake(GameObject):
         self.draw_a_cell(self.positions[0], SNAKE_COLOR)
 
         if self.last:
-            self.draw_a_cell(self.last, BOARD_BACKGROUND_COLOR)
+            self.delete_a_snake(self.last)
 
 
 def handle_keys(game_object):
