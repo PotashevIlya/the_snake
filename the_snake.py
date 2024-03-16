@@ -135,7 +135,7 @@ class Snake(GameObject):
 
     def draw(self):
         """Метод отрисовки движения змейки на экране."""
-        self.draw_a_cell(self.positions[0])
+        self.draw_a_cell(self.get_head_position())
 
         if self.last:
             self.delete_a_snake(self.last)
