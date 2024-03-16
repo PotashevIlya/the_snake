@@ -46,12 +46,8 @@ class GameObject:
     def draw_a_cell(self, position, color=None):
         """Метод, отрисовывающий ячейку."""
         rect = pg.Rect(position, (GRID_SIZE, GRID_SIZE))
-
-        if color is None:
-            color = self.body_color
-
+        color = color or self.body_color
         pg.draw.rect(screen, color, rect)
-
         if color == self.body_color:
             pg.draw.rect(screen, BORDER_COLOR, rect, 1)
 
@@ -68,19 +64,13 @@ class Apple(GameObject):
         super().__init__(body_color)
         self.randomize_position(snake_positions)
 
-    def get_random_position(self):
-        """Метод, опеределяющий рандомную позицию на поле."""
-        self.position = (
-            randint(1, GRID_WIDTH) * GRID_SIZE - GRID_SIZE,
-            randint(1, GRID_HEIGHT) * GRID_SIZE - GRID_SIZE
-        )
-
     def randomize_position(self, snake_positions):
         """Метод, задающий рандомные координаты яблока."""
-        self.get_random_position()
-
         while self.position in snake_positions:
-            self.get_random_position()
+            self.position = (
+                randint(1, GRID_WIDTH) * GRID_SIZE - GRID_SIZE,
+                randint(1, GRID_HEIGHT) * GRID_SIZE - GRID_SIZE
+            )
 
     def draw(self):
         """Метод отрисовки яблока на экране."""
@@ -178,7 +168,7 @@ def main():
             snake.length += 1
             apple.randomize_position(snake.positions)
         elif snake.get_head_position() in snake.positions[
-            2:len(snake.positions)
+            4:len(snake.positions)
         ]:
             snake.reset()
             screen.fill(BOARD_BACKGROUND_COLOR)
