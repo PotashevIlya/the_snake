@@ -76,7 +76,10 @@ class Apple(GameObject):
         )
 
         while self.position in self.snake_positions:
-            self.randomize_position()
+            self.position = (
+                randint(1, GRID_WIDTH) * GRID_SIZE - GRID_SIZE,
+                randint(1, GRID_HEIGHT) * GRID_SIZE - GRID_SIZE
+            )
 
     def draw(self):
         """Метод отрисовки яблока на экране."""
