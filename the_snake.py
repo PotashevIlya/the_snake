@@ -2,7 +2,6 @@ from random import choice, randint
 
 import pygame as pg
 
-# Инициализация PyGame:
 pg.init()
 
 # Константы для размеров поля и сетки:
