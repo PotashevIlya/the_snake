@@ -46,10 +46,13 @@ class GameObject:
     def draw_a_cell(self, position, color=None):
         """Метод, отрисовывающий ячейку."""
         rect = pg.Rect(position, (GRID_SIZE, GRID_SIZE))
-        if color == BOARD_BACKGROUND_COLOR:
-            pg.draw.rect(screen, BOARD_BACKGROUND_COLOR, rect)
-        else:
-            pg.draw.rect(screen, self.body_color, rect)
+
+        if color is None:
+            color = self.body_color
+
+        pg.draw.rect(screen, color, rect)
+
+        if color == self.body_color:
             pg.draw.rect(screen, BORDER_COLOR, rect, 1)
 
     def draw(self):
@@ -63,21 +66,21 @@ class Apple(GameObject):
 
     def __init__(self, snake_positions=[], body_color=APPLE_COLOR):
         super().__init__(body_color)
-        self.snake_positions = snake_positions
-        self.randomize_position()
+        self.randomize_position(snake_positions)
 
-    def randomize_position(self, snake_positions=[]):
-        """Метод, задающий рандомные координаты яблока после поедания."""
+    def get_random_position(self):
+        """Метод, опеределяющий рандомную позицию на поле."""
         self.position = (
             randint(1, GRID_WIDTH) * GRID_SIZE - GRID_SIZE,
             randint(1, GRID_HEIGHT) * GRID_SIZE - GRID_SIZE
         )
 
+    def randomize_position(self, snake_positions):
+        """Метод, задающий рандомные координаты яблока."""
+        self.get_random_position()
+
         while self.position in snake_positions:
-            self.position = (
-                randint(1, GRID_WIDTH) * GRID_SIZE - GRID_SIZE,
-                randint(1, GRID_HEIGHT) * GRID_SIZE - GRID_SIZE
-            )
+            self.get_random_position()
 
     def draw(self):
         """Метод отрисовки яблока на экране."""
@@ -126,7 +129,6 @@ class Snake(GameObject):
         self.length = 1
         self.positions = [self.position]
         self.last = None
-        self.direction = RIGHT
 
     def draw(self):
         """Метод отрисовки движения змейки на экране."""
@@ -163,6 +165,7 @@ def main():
     """Функция, реализующая основную логику игры."""
     screen.fill(BOARD_BACKGROUND_COLOR)
     snake = Snake()
+    snake.direction = RIGHT
     apple = Apple(snake.positions)
 
     while True:
@@ -174,7 +177,9 @@ def main():
         if snake.get_head_position() == apple.position:
             snake.length += 1
             apple.randomize_position(snake.positions)
-        elif snake.get_new_head_position() in snake.positions:
+        elif snake.get_head_position() in snake.positions[
+            2:len(snake.positions)
+        ]:
             snake.reset()
             screen.fill(BOARD_BACKGROUND_COLOR)
 
