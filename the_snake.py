@@ -45,8 +45,8 @@ class GameObject:
 
     def draw_a_cell(self, position, color=None):
         """Метод, отрисовывающий ячейку."""
-        rect = pg.Rect(position, (GRID_SIZE, GRID_SIZE))
         color = color or self.body_color
+        rect = pg.Rect(position, (GRID_SIZE, GRID_SIZE))
         pg.draw.rect(screen, color, rect)
         if color == self.body_color:
             pg.draw.rect(screen, BORDER_COLOR, rect, 1)
@@ -66,11 +66,14 @@ class Apple(GameObject):
 
     def randomize_position(self, snake_positions):
         """Метод, задающий рандомные координаты яблока."""
-        while self.position in snake_positions:
+        while True:
             self.position = (
                 randint(1, GRID_WIDTH) * GRID_SIZE - GRID_SIZE,
-                randint(1, GRID_HEIGHT) * GRID_SIZE - GRID_SIZE
-            )
+                randint(1, GRID_HEIGHT) * GRID_SIZE - GRID_SIZE)
+            if self.position in snake_positions:
+                continue
+            else:
+                break
 
     def draw(self):
         """Метод отрисовки яблока на экране."""
