@@ -25,3 +25,13 @@ pip install -r requirements.txt
 Запустить программу любым удобным способом. 
 
 Наслаждаться! 
+
+### Технологический стек :bulb:
+- Языки и фреймворки  
+  - python  
+
+- Дополнительно установленные библиотеки Python  
+  - pygame
+___  
+#### Автор проекта:  
+ :small_orange_diamond: [Поташев Илья](https://github.com/PotashevIlya)  
